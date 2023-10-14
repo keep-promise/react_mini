@@ -1,10 +1,12 @@
-import { createElement } from './react';
+import React from './react';
+
+const { createElement } = React;
 
 const element = createElement(
   'h1', 
-  { id: 'title', class: 'hello' },
-  'hello word',
-  createElement(h2)
+  { id: 'aaa', class: 'bbb' },
+  'hello react',
+  createElement('div')
 );
 
 console.log('element', element);

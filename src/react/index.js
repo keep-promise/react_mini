@@ -4,7 +4,7 @@ function createElement(type, props, ...children) {
     props: {
       ...props,
       children: children.map((child) => {
-
+        return typeof child === 'object' ? child : createTextElement(child)
       })
     }
   }
@@ -21,7 +21,8 @@ function createTextElement(text) {
   }
 }
 
-export default {
-  createElement,
-  createTextElement
-}
+const React = {
+  createElement
+};
+
+export default React;
