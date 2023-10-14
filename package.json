@@ -1,0 +1,25 @@
+{
+  "name": "_react",
+  "version": "1.0.0",
+  "description": "手写react",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keep-promise/_react.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/keep-promise/_react/issues"
+  },
+  "homepage": "https://github.com/keep-promise/_react#readme",
+  "devDependencies": {
+    "vite": "^4.4.11"
+  }
+}
