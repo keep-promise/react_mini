@@ -7,7 +7,7 @@
 // or keeping an animation smooth, it will have to 
 // wait until the render finishes.
 
-// fiber解决同步渲染的问题，优化成异步渲染，链表【return、child、sibling】
+// fiber解决同步渲染的问题，优化成异步渲染，链表【next、last、fiber】
 // 每一个element都是一个节点，转成链表结构
 // 结构：树 -》平铺结构
 // 异步渲染：类似 requestIdleCallback
