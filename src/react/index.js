@@ -21,8 +21,6 @@ function createTextElement(text) {
   }
 }
 
-const React = {
+export {
   createElement
 };
-
-export default React;

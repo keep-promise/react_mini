@@ -1,12 +1,14 @@
-import React from './react';
+import { createElement } from './react';
+import { render } from './react-dom';
 
-const { createElement } = React;
 
 const element = createElement(
   'h1', 
   { id: 'aaa', class: 'bbb' },
   'hello react',
-  createElement('div')
+  createElement('div', {}, 'div')
 );
 
 console.log('element', element);
+
+render(element, document.getElementById('root'));
