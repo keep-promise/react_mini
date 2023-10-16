@@ -1,5 +1,5 @@
 import { createElement } from './react';
-import { render } from './react-dom';
+import { render, useState } from './react-dom';
 
 const element = createElement(
   'h1', 
@@ -21,7 +21,7 @@ const elementApp = createElement(App, { name: 'foo' });
 const Counter = () => {
   const [count, setCount] = useState(0);
   return createElement('h1', {
-    onclick: () => setState((prev) => prev+1)
+    onclick: () => setCount((prev) => {return prev+1})
   }, count);
 }
 

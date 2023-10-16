@@ -31,7 +31,7 @@ function render(element, container) {
       children: [element]
     },
     alternate: currentRoot,
-    sibiling: null, 
+    sibling: null, 
     child: null,
     parent: null
   };
@@ -207,7 +207,7 @@ function performUnitOfWork(fiber) {
   let nextFiber = fiber;
   while(nextFiber) {
     if (nextFiber.sibling) {
-      return nextFiber.sibiling;
+      return nextFiber.sibling;
     }
     nextFiber = nextFiber.parent;
   }
@@ -243,7 +243,7 @@ export function useState(init) {
     wipFiber.alternate.hooks[hookIndex];
   
   const hook = {
-    state: oldHook ? oldHook : init,
+    state: oldHook ? oldHook.state : init,
     queue: []
   };
 
@@ -258,7 +258,7 @@ export function useState(init) {
       dom: currentRoot.dom,
       props: currentRoot.props,
       alternate: currentRoot
-    }; // 为了方便，更新都是根节点Root开始更新。react源码有优化
+    }; // 为了方便，更新从根节点Root开始更新。react源码有优化
     nextUnitOfWork = wipRoot;
     deletion = [];
   }
@@ -308,11 +308,15 @@ function reconcileChildren(wipFiber, elements) {
       oldFiber.effectTag = 'DELETION';
       deletion.push(oldFiber);
     }
+
+    if (oldFiber) {
+      oldFiber = oldFiber.sibling;
+    }
     
     if (index === 0) {
       wipFiber.child = newFiber;
     } else {
-      preSibling.sibiling = newFiber;
+      preSibling.sibling = newFiber;
     }
     preSibling = newFiber;
     index++;
