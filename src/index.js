@@ -18,4 +18,13 @@ function App(props) {
 // index-v7实现
 const elementApp = createElement(App, { name: 'foo' });
 
-render(elementApp, document.getElementById('root'));
+const Counter = () => {
+  const [count, setCount] = useState(0);
+  return createElement('h1', {
+    onclick: () => setState((prev) => prev+1)
+  }, count);
+}
+
+const elementCount = createElement(Counter, { name: 'foo' });
+
+render(elementCount, document.getElementById('root'));

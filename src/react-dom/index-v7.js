@@ -223,49 +223,10 @@ function updateHostComponent(fiber) {
   reconcileChildren(fiber, children);
 }
 
-// 记住上一次的fiber
-let wipFiber = null;
-let hookIndex = null;
-
 // 处理函数式组件
 function updateFunctionComponent(fiber) {
-  wipFiber = fiber;
-  hookIndex = 0;
-  wipFiber.hooks = [];
   const children = [fiber.type(fiber.props)];
   reconcileChildren(fiber, children);
-}
-
-export function useState(init) {
-  const oldHook = 
-    wipFiber.alternate && 
-    wipFiber.alternate.hooks && 
-    wipFiber.alternate.hooks[hookIndex];
-  
-  const hook = {
-    state: oldHook ? oldHook : init,
-    queue: []
-  };
-
-  const actions = oldHook ? oldHook.queue : [];
-  actions.forEach(action => {
-    hook.state = action(hook.state);
-  })
-
-  const setState = action => {
-    hook.queue.push(action);
-    wipRoot = {
-      dom: currentRoot.dom,
-      props: currentRoot.props,
-      alternate: currentRoot
-    }; // 为了方便，更新都是根节点Root开始更新。react源码有优化
-    nextUnitOfWork = wipRoot;
-    deletion = [];
-  }
-   
-  wipFiber.hooks.push(hook);
-  hookIndex++;
-  return [hook.state, setState];
 }
 
 // 新建fiber，构建fiber
