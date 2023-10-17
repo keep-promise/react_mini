@@ -18,13 +18,18 @@ function App(props) {
 // index-v7实现
 const elementApp = createElement(App, { name: 'foo' });
 
-const Counter = () => {
+const Counter = (props) => {
   const [count, setCount] = useState(0);
   return createElement('h1', {
-    onclick: () => setCount((prev) => {return prev+1})
-  }, count);
+    onclick: () => setCount((prev) => {
+      console.log('111')
+      return prev+1
+    })
+  }, count, createElement('div', null, props.name));
 }
 
 const elementCount = createElement(Counter, { name: 'foo' });
+
+console.log('Counter', elementCount);
 
 render(elementCount, document.getElementById('root'));

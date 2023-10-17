@@ -67,7 +67,7 @@ function commitWork(fiber) {
   // const parentDOM = fiber.parent.dom;
 
   if(fiber.effectTag === 'PLACEMENT' && fiber.dom) {
-    parentDOM.append(fiber.dom);
+    parentDOM.appendChild(fiber.dom);
   } else if(fiber.effectTag === 'DELETION' && fiber.dom) {
     // parentDOM.removeChild(fiber.dom);
     // 函数式组件没有dom
@@ -75,8 +75,6 @@ function commitWork(fiber) {
   } else if(fiber.effectTag === 'UPDATE' && fiber.dom != null) {
     updateDom(fiber.dom, fiber.alternate.props, fiber.props);
   }
-
-  parentDOM.append(fiber.dom);
   commitWork(fiber.child);
   commitWork(fiber.sibling);
 }
@@ -129,19 +127,21 @@ function updateDom(dom, prevProps, nextProps) {
 
 // 调度函数
 function workLoop(deadLine) {
+  console.log('111')
   let shouldYield = false; // 是否中断
   // 有工作且不应该中断
   while(!shouldYield && nextUnitOfWork) {
     nextUnitOfWork = performUnitOfWork(nextUnitOfWork); // 做工作
-    shouldYield = deadLine.timeRemaining() > 1; // 剩余时间小于1ms，要中断
+    shouldYield = deadLine.timeRemaining() < 1; // 剩余时间小于1ms，要中断
   }
-  // 没有足够的时间，请求下一次浏览器空闲时间调度
-  requestIdleCallback(workLoop); // 异步
 
   // 没有fiber要render，且wipRoot存在，就执行commit阶段
   if (!nextUnitOfWork && wipRoot) {
     commitRoot()
   }
+
+  // 没有足够的时间，请求下一次浏览器空闲时间调度
+  requestIdleCallback(workLoop); // 异步
 }
 
 // 第一次浏览器空闲时间调度
@@ -236,14 +236,15 @@ function updateFunctionComponent(fiber) {
   reconcileChildren(fiber, children);
 }
 
-export function useState(init) {
+export function useState(initial) {
   const oldHook = 
     wipFiber.alternate && 
     wipFiber.alternate.hooks && 
     wipFiber.alternate.hooks[hookIndex];
-  
+
+  console.log('wipFiber', wipFiber, oldHook, hookIndex)
   const hook = {
-    state: oldHook ? oldHook.state : init,
+    state: oldHook ? oldHook.state : initial,
     queue: []
   };
 
@@ -253,6 +254,7 @@ export function useState(init) {
   })
 
   const setState = action => {
+    console.log('setState1', hook.state);
     hook.queue.push(action);
     wipRoot = {
       dom: currentRoot.dom,
@@ -265,6 +267,7 @@ export function useState(init) {
    
   wipFiber.hooks.push(hook);
   hookIndex++;
+  console.log('setState', hook.state);
   return [hook.state, setState];
 }
 
