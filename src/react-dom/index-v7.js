@@ -133,7 +133,7 @@ function workLoop(deadLine) {
   // 有工作且不应该中断
   while(!shouldYield && nextUnitOfWork) {
     nextUnitOfWork = performUnitOfWork(nextUnitOfWork); // 做工作
-    shouldYield = deadLine.timeRemaining() > 1; // 是否还有剩余时间
+    shouldYield = deadLine.timeRemaining() < 1; // 剩余时间小于1ms，要中断
   }
   // 没有足够的时间，请求下一次浏览器空闲时间调度
   requestIdleCallback(workLoop); // 异步
@@ -166,7 +166,7 @@ function performUnitOfWork(fiber) {
   // 原因：[commit阶段]挂载到dom上，挂载部分dom时中断，出现部分数据更新，部分数据未更新
   // 用户看到不完整，因此将挂载dom抽离到 [commit阶段]，同步挂载
   // if(fiber.parent) {
-  //   fiber.parent.dom.append(fiber.dom);
+  //   fiber.parent.dom.appendChild(fiber.dom);
   // }
 
   // children创建fiber
