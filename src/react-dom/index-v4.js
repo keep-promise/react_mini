@@ -51,13 +51,15 @@ function render(element, container) {
 
 // 调度渲染实现
 let nextUnitOfWork = null; // 下一次渲染的节点
-
+1+1
 // 调度函数
 function workLoop(deadLine) {
   let shouldYield = false; // 是否中断
   // 有工作且不应该中断
   while(!shouldYield && nextUnitOfWork) {
-    nextUnitOfWork = performUnitOfWork(nextUnitOfWork); // 做工作
+    nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+    // 做工作：当前fiber节点生成真实dom，【并追加到parent父节点的dom上】[后面会抽离出去]，
+    // 构建孩子节点的fiber树, 然后返回下一个任务fiber，有孩子返回孩子，没孩子返回父亲的兄弟
     shouldYield = deadLine.timeRemaining() < 1; // 剩余时间小于1ms，要中断
   }
   // 没有足够的时间，请求下一次浏览器空闲时间调度
@@ -113,7 +115,7 @@ function performUnitOfWork(fiber) {
   if (fiber.child) {
     return fiber.child;
   }
-  // 如果每儿子，就找兄弟，如果也没有兄弟，就往上查找父亲的兄弟
+  // 如果没儿子，就找兄弟，如果也没有兄弟，就往上查找父亲的兄弟
   let nextFiber = fiber;
   while(nextFiber) {
     if (nextFiber.sibling) {

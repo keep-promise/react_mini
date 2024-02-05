@@ -1,3 +1,6 @@
+// Step VI: Reconciliation 协调-diff算法
+// So far we only added stuff to the DOM, but what about updating or deleting nodes?
+
 // fiber解决同步渲染的问题，优化成异步渲染，链表【return、child、sibling】
 // 每一个element都是一个节点，转成链表结构
 // 结构：树 -》平铺结构
@@ -30,7 +33,7 @@ function render(element, container) {
     props: {
       children: [element]
     },
-    alternate: currentRoot,
+    alternate: currentRoot, // 当前fiber信息，下次更新的时候，直接和alternate的fiber diff
     sibiling: null, 
     child: null,
     parent: null
@@ -42,7 +45,7 @@ function render(element, container) {
 // 调度渲染实现
 let nextUnitOfWork = null; // 下一次渲染的节点
 let wipRoot = null;
-let currentRoot = null;
+let currentRoot = null; // 存放上一个fiber
 let deletion = null;
 
 // commit阶段 -- 这一个过程同步执行，不可中断
@@ -230,6 +233,7 @@ function reconcileChildren(wipFiber, elements) {
       deletion.push(oldFiber);
     }
     
+    // 构建fiber tree
     if (index === 0) {
       wipFiber.child = newFiber;
     } else {
