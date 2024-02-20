@@ -1,5 +1,5 @@
 import { createElement } from './react';
-import { render, useState } from './react-dom';
+import { render, useState } from './react-dom/index-v8';
 
 const element = createElement(
   'h1', 
@@ -22,7 +22,6 @@ const Counter = (props) => {
   const [count, setCount] = useState(0);
   return createElement('h1', {
     onclick: () => setCount((prev) => {
-      console.log('111')
       return prev+1
     })
   }, count, createElement('div', null, props.name));
