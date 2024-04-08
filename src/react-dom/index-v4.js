@@ -17,7 +17,6 @@
 // 2.create the fibers for the element’s children
 // 3.select the next unit of work
 
-
 // 基于fiber创建真实dom
 function createDOM(fiber) {
   const { type, props = {} } = fiber;
