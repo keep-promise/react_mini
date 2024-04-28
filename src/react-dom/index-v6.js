@@ -192,7 +192,7 @@ function performUnitOfWork(fiber) {
   }
 }
 
-// 新建fiber，构建fiber
+// 新建fiber，构建fiber tree
 function reconcileChildren(wipFiber, elements) {
   let index = 0;
   let oldFiber = wipFiber.alternate && wipFiber.alternate.child;
@@ -232,12 +232,16 @@ function reconcileChildren(wipFiber, elements) {
       oldFiber.effectTag = 'DELETION';
       deletion.push(oldFiber);
     }
+
+    if (oldFiber) {
+      oldFiber = oldFiber.sibling;
+    }
     
     // 构建fiber tree
     if (index === 0) {
       wipFiber.child = newFiber;
     } else {
-      preSibling.sibiling = newFiber;
+      preSibling.sibling = newFiber;
     }
     preSibling = newFiber;
     index++;

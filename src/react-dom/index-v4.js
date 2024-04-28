@@ -13,9 +13,9 @@
 // 结构：树 -》平铺结构
 // 异步渲染：类似 requestIdleCallback
 
-// 1.add the element to the DOM
-// 2.create the fibers for the element’s children
-// 3.select the next unit of work
+// 1. add the element to the DOM
+// 2. create the fibers for the element’s children
+// 3. select the next unit of work
 
 // 基于fiber创建真实dom
 function createDOM(fiber) {
@@ -50,7 +50,7 @@ function render(element, container) {
 
 // 调度渲染实现
 let nextUnitOfWork = null; // 下一次渲染的节点
-1+1
+
 // 调度函数
 function workLoop(deadLine) {
   let shouldYield = false; // 是否中断
@@ -122,6 +122,7 @@ function performUnitOfWork(fiber) {
     }
     nextFiber = nextFiber.parent;
   }
+  return nextFiber;
 }
 
 

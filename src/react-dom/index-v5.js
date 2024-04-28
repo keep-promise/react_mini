@@ -1,4 +1,4 @@
-// fiber解决同步渲染的问题，优化成异步渲染，链表【return、child、sibling】
+// fiber解决同步渲染的问题，优化成异步渲染，链表【parent、child、sibling】
 // 每一个element都是一个节点，转成链表结构
 // 结构：树 -》平铺结构
 // 异步渲染：类似 requestIdleCallback -- render阶段，构建fiber【虚拟dom】
@@ -39,7 +39,7 @@ function render(element, container) {
 
 // 调度渲染实现
 let nextUnitOfWork = null; // 下一次渲染的节点
-let wipRoot = null;
+let wipRoot = null; // 根节点
 
 // commit阶段 -- 这一个过程同步执行，不可中断
 function commitRoot() {
@@ -134,7 +134,7 @@ function performUnitOfWork(fiber) {
     }
     nextFiber = nextFiber.parent;
   }
-
+  return nextFiber;
 }
 
 export {
